@@ -45,6 +45,11 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setText("[Hotel name]");
 
         jToggleButton1.setText("Book a room");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
 
         admin.setText("log in as admin");
         admin.addActionListener(new java.awt.event.ActionListener() {
@@ -94,6 +99,12 @@ public class Menu extends javax.swing.JFrame {
         login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_adminActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+       BookingScreen book = new BookingScreen();
+       book.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
      * @param args the command line arguments
