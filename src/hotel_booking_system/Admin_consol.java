@@ -165,7 +165,9 @@ public class Admin_consol extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setupActionPerformed
-        // TODO add your handling code here:
+        setupHotel setup = new setupHotel();
+        setup.setVisible(true);
+        
     }//GEN-LAST:event_setupActionPerformed
 
     private boolean rootCheck = false;
