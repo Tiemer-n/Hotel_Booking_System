@@ -7,6 +7,12 @@ package hotel_booking_system;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -159,6 +165,7 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
+        
         setParameters();
         
         OUTER:
@@ -175,8 +182,42 @@ public class Register extends javax.swing.JFrame {
             message.setText("");
             //code to put this new user into the database
 
-            // -----
+            
+            try{
+                
+                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+                
+                String SQL = "INSERT INTO ClientDetails (CLIENTID, FIRSTNAME, SECONDNAME, EMAILADDRESS, PASSWORD)values(?, ?, ?, ?, ?)";
+                PreparedStatement ps = con.prepareStatement(SQL);
+                
+                //getting the max clientid value and adding one to create a new primary key
+                Statement stmt =  con.createStatement();
+                String maxId = "SELECT * FROM ClientDetails WHERE CLIENTID = (SELECT MAX(CLIENTID) FROM ClientDetails)";
+                ResultSet rs = stmt.executeQuery(maxId);
+                int id = 0;
+                if(rs.next()){
+                    id = rs.getInt(1)+1;                    
+                }
+                
+                //replacing the '?' in the String SQL with the values in the fields
+                ps.setString(1, Integer.toString(id));
+                ps.setString(2, firstName);
+                ps.setString(3, secondName);
+                ps.setString(4, email);
+                ps.setString(5, password1);
+                
+                //putting them in the table
+                ps.executeUpdate();
+                
+            }catch (SQLException e){
+                System.out.println(e);
+            }
+            // -----------------
         }
+        
+        
+        
+        
     }//GEN-LAST:event_registerButtonActionPerformed
 
   
