@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -213,6 +214,13 @@ public class Register extends javax.swing.JFrame {
                 System.out.println(e);
             }
             // -----------------
+            
+            JOptionPane.showMessageDialog(null, "Successfully created new user");
+            this.dispose();
+            
+            
+            
+            
         }
         
         

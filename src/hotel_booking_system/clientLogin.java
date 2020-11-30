@@ -8,6 +8,7 @@ package hotel_booking_system;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Isaac
@@ -152,9 +153,11 @@ public class clientLogin extends javax.swing.JFrame {
          }else if (!CheckValid()){
              error.setText("Username or Password is incorrect");
          }else if (CheckValid()){
-             Admin_consol main = new Admin_consol();
-             main.setVisible(true);
+             
+             JOptionPane.showMessageDialog(null, "Successfully logged in");
              this.dispose();
+             
+             
          }
     }//GEN-LAST:event_submitActionPerformed
 
@@ -172,11 +175,11 @@ public class clientLogin extends javax.swing.JFrame {
 
             
             //prints out all customer in the table
-            String SQL = "SELECT * FROM ISAAC.CREDENTIALS";
+            String SQL = "SELECT * FROM ISAAC.CLIENTDETAILS";
             ResultSet rs = stmt.executeQuery(SQL);
             
             while(rs.next()){
-                String usernameCheck = rs.getString("USERNAME");
+                String usernameCheck = rs.getString("EMAILADDRESS");
                 String passwordCheck = rs.getString("PASSWORD");
                 if(username.equals(usernameCheck) && password.equals(passwordCheck)){
                     return true;
