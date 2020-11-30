@@ -7,6 +7,8 @@ package hotel_booking_system;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -157,20 +159,24 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-        
         setParameters();
-        System.out.println(password1);
-        System.out.println(password2);
-        if(password1 == "" && password2 == ""){
-            message.setText("please enter a password");
-        }else if (checkPassword()){
-            message.setText("passwords match");
-        }else  if(!checkPassword()) {
-            message.setText("passwords Do not match");
-            
-            
-        }
         
+        OUTER:
+        if(!checkFields()){
+            message.setText("please fill in all fields");
+            break OUTER;
+        }else if (!checkPassword()){
+            message.setText("passwords Do not match");
+            break OUTER;
+        }else if (!checkEmail()){
+            message.setText("email format is incorrect");
+            break OUTER;
+        }else  if(checkPassword()) {
+            message.setText("");
+            //code to put this new user into the database
+
+            // -----
+        }
     }//GEN-LAST:event_registerButtonActionPerformed
 
   
@@ -200,13 +206,33 @@ public class Register extends javax.swing.JFrame {
     }
     
     public boolean checkPassword(){
+        if(password1.equals(password2)){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean checkFields(){
+        if("".equals(email) || "".equals(firstName) || "".equals(secondName)
+                || "".equals(password1) || "".equals(password2)){
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean checkEmail(){
         
-        if(password1 == password2){
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\."
+                + "[a-zA-Z0-9_+&*-]+)*@"
+                + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
+                + "A-Z]{2,7}$");
+        Matcher matcher = pattern.matcher(email);
+        
+        if(matcher.matches()){
             return true;
         }else{
             return false;
         }
-        
     }
     
     public void setParameters(){
