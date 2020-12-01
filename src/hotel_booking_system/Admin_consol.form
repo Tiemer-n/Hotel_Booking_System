@@ -41,10 +41,6 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="AddAdmin" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="setup" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -66,8 +62,22 @@
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="deleteAdmin" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="deleteUser" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="editBooking" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="AddAdmin" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="viewAdmin" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="viewUsers" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="viewBookings" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -82,19 +92,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="setup" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="AddAdmin" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="logout" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="error" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="setup" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -108,10 +106,31 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="AddButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="248" max="32767" attributes="0"/>
-                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
                   </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="AddAdmin" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="viewAdmin" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="viewUsers" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+              <Component id="viewBookings" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="deleteAdmin" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="deleteUser" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="editBooking" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="logout" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="error" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -209,6 +228,36 @@
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
         <Property name="text" type="java.lang.String" value="_"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="deleteAdmin">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Delete Admins"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="deleteUser">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Delete Users"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="editBooking">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Edit Bookings"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="viewAdmin">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="View Admins"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="viewUsers">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="View Users"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="viewBookings">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="View Bookings"/>
       </Properties>
     </Component>
   </SubComponents>

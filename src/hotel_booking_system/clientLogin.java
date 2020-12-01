@@ -161,6 +161,12 @@ public class clientLogin extends javax.swing.JFrame {
              
              try{
                 Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+                
+                String SQL = "DELETE FROM CURRENTSESSION";
+                PreparedStatement ps = con.prepareStatement(SQL);
+                ps.executeUpdate();
+                
+                
                 PreparedStatement rs = con.prepareStatement("INSERT INTO CURRENTSESSION (CLIENTID) VALUES("+ClientID+")");
                 rs.executeUpdate();
             }catch(SQLException e){

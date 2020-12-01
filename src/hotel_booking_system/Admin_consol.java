@@ -6,9 +6,11 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 public class Admin_consol extends javax.swing.JFrame {
 
@@ -32,6 +34,12 @@ public class Admin_consol extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         AddButton = new javax.swing.JToggleButton();
         jLabel4 = new javax.swing.JLabel();
+        deleteAdmin = new javax.swing.JToggleButton();
+        deleteUser = new javax.swing.JToggleButton();
+        editBooking = new javax.swing.JToggleButton();
+        viewAdmin = new javax.swing.JToggleButton();
+        viewUsers = new javax.swing.JToggleButton();
+        viewBookings = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -93,6 +101,18 @@ public class Admin_consol extends javax.swing.JFrame {
 
         jLabel4.setText("_");
 
+        deleteAdmin.setText("Delete Admins");
+
+        deleteUser.setText("Delete Users");
+
+        editBooking.setText("Edit Bookings");
+
+        viewAdmin.setText("View Admins");
+
+        viewUsers.setText("View Users");
+
+        viewBookings.setText("View Bookings");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -105,9 +125,6 @@ public class Admin_consol extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(AddAdmin)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -124,8 +141,19 @@ public class Admin_consol extends javax.swing.JFrame {
                                     .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(AddButton, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel4)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(deleteAdmin)
+                            .addComponent(deleteUser)
+                            .addComponent(editBooking))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(AddAdmin)
+                            .addComponent(viewAdmin)
+                            .addComponent(viewUsers)
+                            .addComponent(viewBookings))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -136,16 +164,7 @@ public class Admin_consol extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(setup)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(AddAdmin)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(logout))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(error))))
+                        .addComponent(setup))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -155,10 +174,28 @@ public class Admin_consol extends javax.swing.JFrame {
                             .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AddButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 248, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addGap(55, 55, 55))))
+                        .addComponent(AddButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AddAdmin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(viewAdmin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(viewUsers)
+                .addGap(7, 7, 7)
+                .addComponent(viewBookings)
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(deleteAdmin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteUser)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editBooking)))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(logout, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(error, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
 
         pack();
@@ -176,31 +213,7 @@ public class Admin_consol extends javax.swing.JFrame {
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         this.setSize(463, 415);
         
-        try{
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
-
-            Statement stmt =  con.createStatement();
-
-            
-            //finds all credentials fomr the credentials table
-            String SQL = "SELECT * FROM ISAAC.CREDENTIALS";
-            ResultSet rs = stmt.executeQuery(SQL);
-
-            
-            
-            while(rs.next()){
-                String usernameCheck = rs.getString("USERNAME");
-                String passwordCheck = rs.getString("PASSWORD");
-                if("root".equals(usernameCheck) && "default".equals(passwordCheck)){
-                    error.setText("you need to change admin credentials...");
-                    rootCheck = true;
-                }
-                
-            }
-            
-        } catch (SQLException e){
-            System.out.println(e);
-        }
+        
     }//GEN-LAST:event_formWindowActivated
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
@@ -224,18 +237,75 @@ public class Admin_consol extends javax.swing.JFrame {
 
     private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
             
+        //checking if what was entered if valid first
+        
+        if(username.getText().equals(null) || password.getText().equals(null)){
+            error.setText("Please fill in all fields");
+        }else{
+            //adding new admin within the credentials table with all admin accounts on there
+            try{
+                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+
+                String SQL = "INSERT INTO credentials (USERID, USERNAME, PASSWORD)values(?, ?, ?)";
+                PreparedStatement ps = con.prepareStatement(SQL);
+
+
+                //getting the max clientid value and adding one to create a new primary key
+                Statement stmt =  con.createStatement();
+                String maxId = "SELECT * FROM credentials WHERE USERID = (SELECT MAX(USERID) FROM credentials)";
+                ResultSet rs = stmt.executeQuery(maxId);
+                int id = 0;
+                if(rs.next()){
+                    id = rs.getInt(1)+1;                    
+                }
+
+                //replacing the '?' in the String SQL with the values in the fields
+                ps.setString(1, Integer.toString(id));
+                ps.setString(2, username.getText());
+                ps.setString(3, password.getText());
+
+                //putting them in the table
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Successfully created new admin");
+            
+            } catch (SQLException e){
+                System.out.println(e);
+            }
+            username.setVisible(false);
+            password.setVisible(false);
+            jLabel2.setVisible(false);
+            jLabel3.setVisible(false);
+            AddButton.setVisible(false);
+            error.setText(null);
+            
+        }
+        
+        
+        
         try{
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+            
+            String SQL = "INSERT INTO credentials (USERID, USERNAME, PASSWORD)values(?, ?, ?)";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            
+            
+            //getting the max clientid value and adding one to create a new primary key
             Statement stmt =  con.createStatement();
-            String SQL = "SELECT * FROM ISAAC.CREDENTIALS";
-            ResultSet rs = stmt.executeQuery(SQL);
+            String maxId = "SELECT * FROM credentials WHERE USERID = (SELECT MAX(USERID) FROM credentials)";
+            ResultSet rs = stmt.executeQuery(maxId);
+            int id = 0;
+            if(rs.next()){
+                id = rs.getInt(1)+1;                    
+            }
+            
+            //replacing the '?' in the String SQL with the values in the fields
+            ps.setString(1, Integer.toString(id));
+            ps.setString(2, username.getText());
+            ps.setString(3, password.getText());
 
-            //if(rootCheck){
-             //   SQL = "DELETE FROM ISAAC.CREDENTIALS WHERE USERNAME='temp'";
-             //   stmt.executeUpdate(SQL);
-            //}
-            
-            
+            //putting them in the table
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Successfully created new admin");
             
         } catch (SQLException e){
             System.out.println(e);
@@ -289,6 +359,9 @@ public class Admin_consol extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton AddAdmin;
     private javax.swing.JToggleButton AddButton;
+    private javax.swing.JToggleButton deleteAdmin;
+    private javax.swing.JToggleButton deleteUser;
+    private javax.swing.JToggleButton editBooking;
     private javax.swing.JLabel error;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -298,5 +371,8 @@ public class Admin_consol extends javax.swing.JFrame {
     private javax.swing.JPasswordField password;
     private javax.swing.JToggleButton setup;
     private javax.swing.JTextField username;
+    private javax.swing.JToggleButton viewAdmin;
+    private javax.swing.JToggleButton viewBookings;
+    private javax.swing.JToggleButton viewUsers;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,6 +7,10 @@ package hotel_booking_system;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
@@ -38,6 +42,9 @@ public class Menu extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -105,6 +112,22 @@ public class Menu extends javax.swing.JFrame {
        book.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        
+        //deleting the currentsession table because the person has logged off
+        try{
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+            String SQL = "DELETE FROM CURRENTSESSION";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.executeUpdate();
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+
+        //------
+        
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
