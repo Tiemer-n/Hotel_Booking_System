@@ -15,9 +15,8 @@ import javax.swing.JOptionPane;
  */
 public class clientLogin extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login
-     */
+    int ClientID = -1;
+    
     public clientLogin() {
         initComponents();
     }
@@ -49,6 +48,9 @@ public class clientLogin extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
             }
         });
 
@@ -93,7 +95,7 @@ public class clientLogin extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addContainerGap()
                             .addComponent(jButton1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
                             .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addGap(11, 11, 11)
@@ -154,11 +156,28 @@ public class clientLogin extends javax.swing.JFrame {
              error.setText("Username or Password is incorrect");
          }else if (CheckValid()){
              
+              
+             
+             
+             try{
+                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+                PreparedStatement rs = con.prepareStatement("INSERT INTO CURRENTSESSION (CLIENTID) VALUES("+ClientID+")");
+                rs.executeUpdate();
+            }catch(SQLException e){
+                System.out.println(e);
+            }
+             
              JOptionPane.showMessageDialog(null, "Successfully logged in");
              this.dispose();
              
              
          }
+         
+         
+         
+         
+         
+         
     }//GEN-LAST:event_submitActionPerformed
 
     public boolean CheckValid(){
@@ -182,6 +201,7 @@ public class clientLogin extends javax.swing.JFrame {
                 String usernameCheck = rs.getString("EMAILADDRESS");
                 String passwordCheck = rs.getString("PASSWORD");
                 if(username.equals(usernameCheck) && password.equals(passwordCheck)){
+                    ClientID = rs.getInt(1);
                     return true;
                 }
                 
@@ -211,6 +231,19 @@ public class clientLogin extends javax.swing.JFrame {
         Register register = new Register();
         register.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        
+        
+        try{
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+            PreparedStatement rs = con.prepareStatement("INSERT INTO CURRENTSESSION (CLIENTID) VALUES("+ClientID+")");
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        
+        
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
