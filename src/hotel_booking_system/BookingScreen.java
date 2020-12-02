@@ -226,7 +226,7 @@ public class BookingScreen extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Menu main = new Menu();
         main.setVisible(true);
-        
+        main.close=true;
         try{
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
             String SQL = "DELETE FROM CURRENTSESSION";

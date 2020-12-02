@@ -36,6 +36,7 @@ public class Hotel_Booking_System {
         
         Menu main = new Menu();
         main.setVisible(true);
+        main.close=true;
         
     }
     

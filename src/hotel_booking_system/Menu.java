@@ -18,9 +18,8 @@ import java.sql.SQLException;
  */
 public class Menu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Menu
-     */
+    
+    boolean close = false;
     public Menu() {
         initComponents();
     }
@@ -104,13 +103,18 @@ public class Menu extends javax.swing.JFrame {
     private void adminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminActionPerformed
         Login login = new Login();
         login.setVisible(true);
-        this.dispose();
+        if(close){
+         this.dispose();
+       }
     }//GEN-LAST:event_adminActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
        BookingScreen book = new BookingScreen();
        book.setVisible(true);
-       this.dispose();
+       if(close){
+        this.dispose();
+       }
+       
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
