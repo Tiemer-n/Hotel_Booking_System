@@ -35,18 +35,22 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="viewBookings" min="-2" max="-2" attributes="0"/>
-                          <Component id="deleteAdmin" min="-2" max="-2" attributes="0"/>
-                          <Component id="deleteUser" min="-2" max="-2" attributes="0"/>
-                          <Component id="editBooking" min="-2" max="-2" attributes="0"/>
-                          <Component id="logout" min="-2" pref="107" max="-2" attributes="0"/>
-                          <Component id="AddAdmin" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="viewAdmin" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="viewUsers" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="error" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="viewBookings" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="deleteAdmin" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="deleteUser" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="editBooking" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="logout" alignment="0" min="-2" pref="107" max="-2" attributes="0"/>
+                                  <Component id="AddAdmin" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="viewAdmin" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="viewUsers" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
@@ -103,7 +107,7 @@
                       <Component id="AddButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                       <Component id="AddAdmin" min="-2" max="-2" attributes="0"/>
@@ -121,15 +125,15 @@
                       <Component id="editBooking" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                       <Component id="logout" min="-2" pref="43" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
-                      <Component id="error" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="error" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>

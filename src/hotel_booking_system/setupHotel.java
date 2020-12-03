@@ -5,12 +5,15 @@
  */
 package hotel_booking_system;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -37,10 +40,11 @@ public class setupHotel extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jSpinner1 = new javax.swing.JSpinner();
         Close = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        Add = new javax.swing.JToggleButton();
+        AddButton = new javax.swing.JToggleButton();
         jLabel2 = new javax.swing.JLabel();
         numberOfBeds = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
@@ -51,12 +55,36 @@ public class setupHotel extends javax.swing.JFrame {
         roomTypeName = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         numberOfRooms = new javax.swing.JSpinner();
+        jLabel8 = new javax.swing.JLabel();
+        adultCost = new javax.swing.JSpinner();
+        jLabel9 = new javax.swing.JLabel();
+        childCost = new javax.swing.JSpinner();
+        saveButton = new javax.swing.JToggleButton();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        roomTypes = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        numberOfRooms1 = new javax.swing.JSpinner();
+        addExsistingRoomType = new javax.swing.JToggleButton();
+        bedLabel = new javax.swing.JLabel();
+        countLabel = new javax.swing.JLabel();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                formMouseMoved(evt);
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         Close.setText("Close");
         Close.addActionListener(new java.awt.event.ActionListener() {
@@ -68,10 +96,10 @@ public class setupHotel extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setText("Hotel Name:");
 
-        Add.setText("Add");
-        Add.addActionListener(new java.awt.event.ActionListener() {
+        AddButton.setText("Add");
+        AddButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddActionPerformed(evt);
+                AddButtonActionPerformed(evt);
             }
         });
 
@@ -94,43 +122,111 @@ public class setupHotel extends javax.swing.JFrame {
 
         numberOfRooms.setModel(new javax.swing.SpinnerNumberModel(0, 0, 1000, 1));
 
+        jLabel8.setText("Child Cost per night:");
+
+        adultCost.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 1000.0d, 0.1d));
+
+        jLabel9.setText("Adult cost per night:");
+
+        childCost.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 1000.0d, 0.1d));
+
+        saveButton.setText("Save");
+
+        jLabel10.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel10.setText("Add room with exsisting type:");
+
+        jLabel11.setText("(keep as 0 if no rooms are to be created )");
+
+        roomTypes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        roomTypes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roomTypesActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setText("Type:");
+
+        jLabel13.setText("Amount to be added:");
+
+        numberOfRooms1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 1000, 1));
+
+        addExsistingRoomType.setText("Add");
+
+        bedLabel.setText("Amount of beds:");
+
+        countLabel.setText("Max sleeping count:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(121, 121, 121)
-                        .addComponent(Close))
+                        .addComponent(Close, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(roomTypeName)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(numberOfBeds, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                                            .addComponent(maxSleepingCount, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel5)))
+                                .addGap(126, 126, 126))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel8)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(childCost, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel2)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel9)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(adultCost, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addGap(20, 20, 20)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(AddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(numberOfRooms))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel11))))
+                        .addContainerGap(32, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(roomTypeName)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(numberOfBeds, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(maxSleepingCount, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(numberOfRooms, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Add, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel12)
+                                .addGap(18, 18, 18)
+                                .addComponent(roomTypes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(bedLabel)
+                                .addGap(64, 64, 64)
+                                .addComponent(countLabel))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel13)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel5)))))
-                .addContainerGap(81, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(addExsistingRoomType, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(numberOfRooms1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,8 +236,17 @@ public class setupHotel extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(childCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(adultCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(roomTypeName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -157,11 +262,26 @@ public class setupHotel extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(numberOfRooms, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(numberOfRooms, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(AddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(jLabel10)
                 .addGap(18, 18, 18)
-                .addComponent(Add, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addComponent(Close)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(roomTypes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bedLabel)
+                    .addComponent(countLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(numberOfRooms1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addExsistingRoomType, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(Close, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -172,16 +292,16 @@ public class setupHotel extends javax.swing.JFrame {
        this.dispose();
     }//GEN-LAST:event_CloseActionPerformed
 
-    private void AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddActionPerformed
+    private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
         
         
         
         //checking that all fields are filled
-        if(roomTypeName.getText().equals("")  || (Integer) numberOfBeds.getValue() == 0 || (Integer) maxSleepingCount.getValue() == 0
-                || (Integer) numberOfRooms.getValue() == 0){
-        JOptionPane.showMessageDialog(null, "please fill in valid parameters");
+        if(roomTypeName.getText().equals("")  || (Integer) numberOfBeds.getValue() == 0 || (Integer) maxSleepingCount.getValue() == 0){
             
-        }else{
+            JOptionPane.showMessageDialog(null, "please fill in valid parameters");
+            
+        }else {
             
             try{
                 Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
@@ -206,9 +326,7 @@ public class setupHotel extends javax.swing.JFrame {
 
                 //putting them in the table
                 ps.executeUpdate();
-
-
-
+                
                 //making degisnated amount of rooms with this type into the 'room' table
 
                 //id = room type
@@ -240,23 +358,84 @@ public class setupHotel extends javax.swing.JFrame {
                 numberOfBeds.setValue(0);
                 maxSleepingCount.setValue(0);
                 numberOfRooms.setValue(0);
-
-
-
+                
             }catch(SQLException e){
                 System.out.println(e);
             }
+        }
+    }//GEN-LAST:event_AddButtonActionPerformed
+
+    
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        
+        try{
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
             
+            Statement stmt =  con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_READ_ONLY);
+            String SQL = "SELECT * FROM ROOMTYPE";
+            ResultSet rs = stmt.executeQuery(SQL);
+            int count = 0;
+            while(rs.next()){
+                count++;
+                
+            }
+            
+            String [] names = new String [count];
+            int i = 0; 
+            rs.first();
+            names[i] = rs.getString(2);
+            i++;
+            while(rs.next()){
+                names[i] = rs.getString(2);
+                i++;
+            }
+            
+            
+            DefaultComboBoxModel model = new DefaultComboBoxModel( names );
+            roomTypes.setModel( model );
+           
+            
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        
+    }//GEN-LAST:event_formWindowActivated
+
+    private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_formMouseMoved
+
+    private void roomTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomTypesActionPerformed
+        
+        try{
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+            Statement stmt =  con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_READ_ONLY);
+            String SQL = "SELECT numberofbeds,maxsleepingcount FROM ROOMTYPE WHERE roomtypename='"+roomTypes.getSelectedItem().toString()+"'";
+            ResultSet rs = stmt.executeQuery(SQL);
+            
+            while(rs.next()){
+                bedLabel.setText("Amount of beds: "+Integer.toString(rs.getInt(1)));
+                countLabel.setText("Max sleeping count: "+Integer.toString(rs.getInt(2)));
+            }
+            
+            
+            
+            
+        }catch(SQLException e){
+            System.out.println(e);
         }
         
         
-        
-        
-        
-        
-        
-        
-    }//GEN-LAST:event_AddActionPerformed
+    }//GEN-LAST:event_roomTypesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,21 +473,36 @@ public class setupHotel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton Add;
+    private javax.swing.JToggleButton AddButton;
     private javax.swing.JButton Close;
+    private javax.swing.JToggleButton addExsistingRoomType;
+    private javax.swing.JSpinner adultCost;
+    private javax.swing.JLabel bedLabel;
+    private javax.swing.JSpinner childCost;
+    private javax.swing.JLabel countLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JSpinner maxSleepingCount;
     private javax.swing.JSpinner numberOfBeds;
     private javax.swing.JSpinner numberOfRooms;
+    private javax.swing.JSpinner numberOfRooms1;
     private javax.swing.JTextField roomTypeName;
+    private javax.swing.JComboBox<String> roomTypes;
+    private javax.swing.JToggleButton saveButton;
     // End of variables declaration//GEN-END:variables
 }
