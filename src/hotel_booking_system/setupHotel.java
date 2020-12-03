@@ -42,7 +42,7 @@ public class setupHotel extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jSpinner1 = new javax.swing.JSpinner();
         Close = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        hotelName = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         AddButton = new javax.swing.JToggleButton();
         jLabel2 = new javax.swing.JLabel();
@@ -131,6 +131,11 @@ public class setupHotel extends javax.swing.JFrame {
         childCost.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, 1000.0d, 0.1d));
 
         saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel10.setText("Add room with exsisting type:");
@@ -151,6 +156,11 @@ public class setupHotel extends javax.swing.JFrame {
         numberOfRooms1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 1000, 1));
 
         addExsistingRoomType.setText("Add");
+        addExsistingRoomType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addExsistingRoomTypeActionPerformed(evt);
+            }
+        });
 
         bedLabel.setText("Amount of beds:");
 
@@ -185,7 +195,7 @@ public class setupHotel extends javax.swing.JFrame {
                                 .addGap(126, 126, 126))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel1)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(hotelName, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel8)
                                     .addGap(18, 18, 18)
@@ -234,7 +244,7 @@ public class setupHotel extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
                 .addGap(5, 5, 5)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(hotelName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -353,7 +363,7 @@ public class setupHotel extends javax.swing.JFrame {
                 }
 
                 JOptionPane.showMessageDialog(null, "Successfully created "+(Integer) numberOfRooms.getValue()+" rooms with type "+roomTypeName.getText());
-
+                updateComboBox();
                 roomTypeName.setText(null);
                 numberOfBeds.setValue(0);
                 maxSleepingCount.setValue(0);
@@ -365,10 +375,7 @@ public class setupHotel extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_AddButtonActionPerformed
 
-    
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+    private void updateComboBox(){
         
         try{
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
@@ -401,6 +408,37 @@ public class setupHotel extends javax.swing.JFrame {
         }catch(SQLException e){
             System.out.println(e);
         }
+        
+    }
+    
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        
+        updateComboBox();
+        
+        
+        
+        try{
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+            Statement stmt =  con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_READ_ONLY);
+            String SQL = "SELECT * FROM hotelparameters";
+            ResultSet rs = stmt.executeQuery(SQL);
+            rs.next();
+            
+            hotelName.setText(rs.getString(1));
+            childCost.setValue(rs.getDouble(2));
+            adultCost.setValue(rs.getDouble(3));
+            
+            
+            
+            
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        
+        
         
     }//GEN-LAST:event_formWindowActivated
 
@@ -436,6 +474,86 @@ public class setupHotel extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_roomTypesActionPerformed
+
+    private void addExsistingRoomTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExsistingRoomTypeActionPerformed
+       
+        if((Integer) numberOfRooms1.getValue() == 0){
+            JOptionPane.showMessageDialog(null, "Room number cannot equal 0");
+        }else{
+            
+            try{
+                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+                Statement stmt =  con.createStatement();
+                
+                String maxId = "SELECT * FROM room WHERE roomid = (SELECT MAX(roomid) FROM room)";
+                ResultSet rs = stmt.executeQuery(maxId);
+                int roomid = 1;
+                if(rs.next()){
+                    roomid = rs.getInt(1)+1;
+                }
+                
+                
+                
+                
+                //getting the id of the room type 
+                String roomtype = "SELECT roomtype FROM roomtype WHERE roomtypename='"+roomTypes.getSelectedItem().toString()+"'";
+                rs = stmt.executeQuery(roomtype);
+                int id = 0;
+                if(rs.next()){
+                    id = rs.getInt(1);
+                }
+                
+                for (int i = 0; i < (Integer) numberOfRooms1.getValue(); i++) {
+                    String SQL1 = "INSERT INTO room (roomid, roomtype)values(?, ?)";
+                    PreparedStatement ps = con.prepareStatement(SQL1);
+
+                    ps.setString(1, Integer.toString(roomid));
+                    ps.setString(2, Integer.toString(id));
+
+                    //putting them in the table
+                    ps.executeUpdate();
+
+                    roomid++;
+                }
+                
+                JOptionPane.showMessageDialog(null, "Successfully created "+(Integer) numberOfRooms1.getValue()+" rooms with type "+roomTypes.getSelectedItem().toString());
+                
+            }catch(SQLException e){
+                System.out.println(e);
+            }
+            
+        }
+        
+    }//GEN-LAST:event_addExsistingRoomTypeActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+               
+        if(hotelName.getText().contains("'")){
+            JOptionPane.showMessageDialog(null, "illegal char type \" ' \" ");
+        }else{
+            try{
+                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+                Statement stmt =  con.createStatement();
+                String currentName ="SELECT hotelname FROM hotelparameters";
+                ResultSet rs = stmt.executeQuery(currentName);
+                rs.next();
+
+
+
+                String SQL = "UPDATE hotelparameters SET hotelname='"+hotelName.getText()+"', childcost="+childCost.getValue().toString()
+                        +", adultcost="+adultCost.getValue().toString()+"  WHERE hotelname='"+rs.getString(1)+"'";
+                PreparedStatement ps = con.prepareStatement(SQL);
+
+                ps.executeUpdate();
+
+                JOptionPane.showMessageDialog(null, "Successfully updated hotel parameters");
+
+            }catch(SQLException e){
+                System.out.println(e);
+            }
+        }
+        
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -480,6 +598,7 @@ public class setupHotel extends javax.swing.JFrame {
     private javax.swing.JLabel bedLabel;
     private javax.swing.JSpinner childCost;
     private javax.swing.JLabel countLabel;
+    private javax.swing.JTextField hotelName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -496,7 +615,6 @@ public class setupHotel extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JSpinner maxSleepingCount;
     private javax.swing.JSpinner numberOfBeds;
     private javax.swing.JSpinner numberOfRooms;
