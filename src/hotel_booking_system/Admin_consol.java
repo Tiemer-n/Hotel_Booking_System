@@ -552,9 +552,12 @@ public class Admin_consol extends javax.swing.JFrame {
                 }
 
                 //replacing the '?' in the String SQL with the values in the fields
+                
+                Admin newAdmin = new Admin(username.getText(), password1.getText());
+                
                 ps.setString(1, Integer.toString(id));
-                ps.setString(2, username.getText());
-                ps.setString(3, password1.getText());
+                ps.setString(2, newAdmin.getUsername());
+                ps.setString(3, newAdmin.getPassword());
 
                 //putting them in the table
                 ps.executeUpdate();
