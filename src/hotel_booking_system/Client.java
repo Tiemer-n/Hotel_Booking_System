@@ -16,6 +16,8 @@ public class Client extends User {
     
     public Client(String firstName, String username, String emailAddress, String password) {
         super(username, password);
+        this.firstName = firstName;
+        this.emailAddress = emailAddress;
     }
 
     public String getFirstName() {

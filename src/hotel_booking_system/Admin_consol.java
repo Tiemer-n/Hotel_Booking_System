@@ -12,10 +12,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
 
 public class Admin_consol extends javax.swing.JFrame {
 
-
+    
     public Admin_consol() {
         initComponents();
     }
@@ -34,7 +35,7 @@ public class Admin_consol extends javax.swing.JFrame {
         viewUsers = new javax.swing.JToggleButton();
         viewBookings = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Table = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         deleteAdmin = new javax.swing.JToggleButton();
         deleteUser = new javax.swing.JToggleButton();
@@ -80,7 +81,7 @@ public class Admin_consol extends javax.swing.JFrame {
 
         jPasswordField1.setText("jPasswordField1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setSize(new java.awt.Dimension(463, 415));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -109,24 +110,32 @@ public class Admin_consol extends javax.swing.JFrame {
         viewAdmin.setText("View Admins");
 
         viewUsers.setText("View Users");
+        viewUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewUsersActionPerformed(evt);
+            }
+        });
 
         viewBookings.setText("View Bookings");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        Table.setEnabled(false);
+        Table.setFillsViewportHeight(true);
+        Table.setFocusable(false);
+        jScrollPane1.setViewportView(Table);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        jLabel1.setText("Admin Consol");
+        jLabel1.setText("Admin Console");
 
         deleteAdmin.setText("Delete Admins");
 
@@ -156,7 +165,7 @@ public class Admin_consol extends javax.swing.JFrame {
                             .addComponent(error)
                             .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(editBooking))
-                        .addGap(0, 47, Short.MAX_VALUE)))
+                        .addGap(0, 41, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -174,15 +183,15 @@ public class Admin_consol extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(editBooking)
                 .addGap(40, 40, 40)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                 .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(error)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Admin Consol", jPanel1);
+        jTabbedPane1.addTab("Admin Console", jPanel1);
 
         jLabel5.setText("Amount of beds in room:");
 
@@ -447,7 +456,7 @@ public class Admin_consol extends javax.swing.JFrame {
                             .addComponent(password1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(AddButton)
                             .addComponent(password2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(243, Short.MAX_VALUE))
+                .addContainerGap(237, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -477,7 +486,7 @@ public class Admin_consol extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -821,6 +830,30 @@ public class Admin_consol extends javax.swing.JFrame {
 
     }//GEN-LAST:event_addExsistingRoomTypeActionPerformed
 
+    private void viewUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUsersActionPerformed
+        
+        try{
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+            Statement stmt =  con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT clientid,firstname,secondname,emailaddress FROM CLIENTDETAILS");
+            Table.setModel(DbUtils.resultSetToTableModel(rs));
+            
+            
+        }catch(SQLException e){
+            System.out.println(e);
+        }   
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_viewUsersActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -861,6 +894,7 @@ public class Admin_consol extends javax.swing.JFrame {
     private javax.swing.JToggleButton AddButton;
     private javax.swing.JToggleButton AddButton1;
     private javax.swing.JButton Close;
+    private javax.swing.JTable Table;
     private javax.swing.JToggleButton addExsistingRoomType;
     private javax.swing.JSpinner adultCost;
     private javax.swing.JLabel bedLabel;
@@ -895,7 +929,6 @@ public class Admin_consol extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JToggleButton logout;
     private javax.swing.JSpinner maxSleepingCount;
     private javax.swing.JSpinner numberOfBeds;
