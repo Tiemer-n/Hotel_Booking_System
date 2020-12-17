@@ -25,6 +25,8 @@ import net.proteanit.sql.DbUtils;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
  *
@@ -64,6 +66,8 @@ public class BookingScreen extends javax.swing.JFrame {
         startDate = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         loginButton = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        nightsLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         submit = new javax.swing.JToggleButton();
@@ -95,6 +99,7 @@ public class BookingScreen extends javax.swing.JFrame {
         jToggleButton4 = new javax.swing.JToggleButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         Table = new javax.swing.JTable();
+        jToggleButton6 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -198,6 +203,10 @@ public class BookingScreen extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Nightes Stayed:");
+
+        nightsLabel.setText("(nights)");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -209,6 +218,13 @@ public class BookingScreen extends javax.swing.JFrame {
                 .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buyButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jToggleButton1))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -235,15 +251,13 @@ public class BookingScreen extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(costLabel)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buyButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jToggleButton1)))
+                                .addComponent(costLabel))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(nightsLabel)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -271,14 +285,17 @@ public class BookingScreen extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(endDate)
                     .addComponent(endDateLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(nightsLabel))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(costLabel)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(costLabel)
-                            .addComponent(jLabel4))
-                        .addGap(72, 72, 72)
-                        .addComponent(jButton2))
+                    .addComponent(jButton2)
                     .addComponent(buyButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -515,6 +532,8 @@ public class BookingScreen extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(Table);
 
+        jToggleButton6.setText("Add payment method");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -522,15 +541,17 @@ public class BookingScreen extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jToggleButton2)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jToggleButton3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jToggleButton4)))
-                        .addGap(0, 212, Short.MAX_VALUE)))
+                                .addComponent(jToggleButton4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jToggleButton6)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -539,7 +560,8 @@ public class BookingScreen extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jToggleButton3)
-                    .addComponent(jToggleButton4))
+                    .addComponent(jToggleButton4)
+                    .addComponent(jToggleButton6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -865,6 +887,7 @@ public class BookingScreen extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 startDateLabel.setText(datePicker.getJFormattedTextField().getText());
+                changeNightCount();
                 frame.dispose();
             }
         });
@@ -896,6 +919,7 @@ public class BookingScreen extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 endDateLabel.setText(datePicker.getJFormattedTextField().getText());
+                changeNightCount();
                 frame.dispose();
             }
         });
@@ -913,9 +937,7 @@ public class BookingScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_childrenCountStateChanged
 
     private void changeCost(){
-        
-        try{
-            
+        try{    
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
             Statement stmt =  con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT adultcost, childcost FROM HOTELPARAMETERS");
@@ -927,8 +949,20 @@ public class BookingScreen extends javax.swing.JFrame {
         }catch(SQLException e){
             System.out.println(e);
         }
-        
-        
+    }
+    
+    private void changeNightCount(){
+       try{
+            //Parsing the date
+            LocalDate dateBefore = LocalDate.parse(startDateLabel.getText());
+            LocalDate dateAfter = LocalDate.parse(endDateLabel.getText());
+
+            //calculating number of days in between
+            long noOfDaysBetween = ChronoUnit.DAYS.between(dateBefore, dateAfter);
+            
+            //setting the label as the value of the amount of days between 
+            nightsLabel.setText(Long.toString(noOfDaysBetween));   
+       }catch(Exception e){}
     }
     
     public static void main(String args[]) {
@@ -1020,6 +1054,7 @@ public class BookingScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1037,8 +1072,10 @@ public class BookingScreen extends javax.swing.JFrame {
     private javax.swing.JToggleButton jToggleButton3;
     private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JToggleButton jToggleButton5;
+    private javax.swing.JToggleButton jToggleButton6;
     private javax.swing.JButton loginButton;
     private javax.swing.JLabel message;
+    private javax.swing.JLabel nightsLabel;
     private javax.swing.JPasswordField password1RegisterField;
     private javax.swing.JPasswordField password2RegisterField;
     private javax.swing.JButton registerButton;
