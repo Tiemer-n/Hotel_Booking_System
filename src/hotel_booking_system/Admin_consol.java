@@ -864,7 +864,6 @@ public class Admin_consol extends javax.swing.JFrame {
                 if(rs.next()){
                     id = rs.getInt(1);
                 }
-
                 for (int i = 0; i < (Integer) numberOfRooms1.getValue(); i++) {
                     String SQL1 = "INSERT INTO room (roomid, roomtype)values(?, ?)";
                     PreparedStatement ps = con.prepareStatement(SQL1);
@@ -877,19 +876,15 @@ public class Admin_consol extends javax.swing.JFrame {
 
                     roomid++;
                 }
-
                 JOptionPane.showMessageDialog(null, "Successfully created "+(Integer) numberOfRooms1.getValue()+" rooms with type "+roomTypes.getSelectedItem().toString());
-
             }catch(SQLException e){
                 System.out.println(e);
             }
-
         }
-
     }//GEN-LAST:event_addExsistingRoomTypeActionPerformed
 
     private void viewUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUsersActionPerformed
-        
+       
         try{
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
             Statement stmt =  con.createStatement();
@@ -909,8 +904,6 @@ public class Admin_consol extends javax.swing.JFrame {
         }catch(SQLException e){
             System.out.println(e);
         }
-        
-        
     }//GEN-LAST:event_viewAdminActionPerformed
 
     private void viewRoomTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewRoomTypesActionPerformed

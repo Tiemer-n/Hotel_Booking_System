@@ -15,6 +15,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,6 +29,7 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 /**
  *
@@ -100,6 +103,19 @@ public class BookingScreen extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         Table = new javax.swing.JTable();
         jToggleButton6 = new javax.swing.JToggleButton();
+        veiwPaymentMethods = new javax.swing.JToggleButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        addPayment = new javax.swing.JToggleButton();
+        cardNumber = new javax.swing.JFormattedTextField();
+        jLabel17 = new javax.swing.JLabel();
+        securityNumber = new javax.swing.JFormattedTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jToggleButton7 = new javax.swing.JToggleButton();
+        expiryDate = new javax.swing.JLabel();
+        singedInLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -163,7 +179,7 @@ public class BookingScreen extends javax.swing.JFrame {
         });
 
         buyButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        buyButton1.setText("Pay");
+        buyButton1.setText("Find a room");
         buyButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buyButton1ActionPerformed(evt);
@@ -533,6 +549,18 @@ public class BookingScreen extends javax.swing.JFrame {
         jScrollPane2.setViewportView(Table);
 
         jToggleButton6.setText("Add payment method");
+        jToggleButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton6ActionPerformed(evt);
+            }
+        });
+
+        veiwPaymentMethods.setText("View Payment Methods");
+        veiwPaymentMethods.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                veiwPaymentMethodsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -550,7 +578,9 @@ public class BookingScreen extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jToggleButton4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jToggleButton6)))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(veiwPaymentMethods)
+                                    .addComponent(jToggleButton6))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -562,8 +592,10 @@ public class BookingScreen extends javax.swing.JFrame {
                     .addComponent(jToggleButton3)
                     .addComponent(jToggleButton4)
                     .addComponent(jToggleButton6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(veiwPaymentMethods)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton2)
                 .addContainerGap())
@@ -571,25 +603,116 @@ public class BookingScreen extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Account", jPanel4);
 
+        jLabel15.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel15.setText("Add payment Method");
+
+        jLabel16.setText("(due to legal complications this demo program cannot store actual payment details)");
+
+        addPayment.setText("Add payment method");
+        addPayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPaymentActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setText("Redundant card number:");
+
+        jLabel18.setText("Security number:");
+
+        jLabel19.setText("Expiry Date:");
+
+        jToggleButton7.setText("Add Date");
+        jToggleButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton7ActionPerformed(evt);
+            }
+        });
+
+        expiryDate.setText("");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel16)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel18)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addGap(18, 18, 18)
+                                .addComponent(jToggleButton7)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(addPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(expiryDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cardNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(securityNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel16)
+                .addGap(19, 19, 19)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(cardNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(securityNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19)
+                    .addComponent(jToggleButton7)
+                    .addComponent(expiryDate))
+                .addGap(16, 16, 16)
+                .addComponent(addPayment)
+                .addContainerGap(222, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Payment", jPanel5);
+
+        singedInLabel.setText("Not singed in");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(singedInLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(singedInLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         error.setText(null);
         if(ClientID == -1){
@@ -641,7 +764,12 @@ public class BookingScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void buyButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButton1ActionPerformed
-        // TODO add your handling code here:
+       
+        
+        
+        
+        
+        
     }//GEN-LAST:event_buyButton1ActionPerformed
 
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
@@ -759,7 +887,6 @@ public class BookingScreen extends javax.swing.JFrame {
                 }
 
                 //replacing the '?' in the String SQL with the values in the fields
-
                 Client newClient = new Client(firstNameRegisterField.getText(), secondNameRegisterField.getText()
                         , emailRegisterField.getText(), password1RegisterField.getText());
 
@@ -806,7 +933,7 @@ public class BookingScreen extends javax.swing.JFrame {
     }
     
     public boolean checkEmail(){
-        
+        //checking the email against a regular expression
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\."
                 + "[a-zA-Z0-9_+&*-]+)*@"
                 + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
@@ -936,6 +1063,127 @@ public class BookingScreen extends javax.swing.JFrame {
         changeCost();
     }//GEN-LAST:event_childrenCountStateChanged
 
+    private void addPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPaymentActionPerformed
+        
+        Pattern pattern = Pattern.compile("^[0-9]*$");
+        Matcher matcher = pattern.matcher(cardNumber.getText());
+        
+        OUTERRRR:
+        
+        if(matcher.matches()){
+            OUTER:
+            try{
+                if(ClientID == -1){
+                    JOptionPane.showMessageDialog(null, "you are not logged in");
+                    break OUTER;
+                }
+                
+                if(securityNumber.getText().length() == 3 && !expiryDate.getText().equals("")){
+                    if(checkValidExpiryDate(expiryDate.getText())){
+                        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+
+                        String SQL = "INSERT INTO PaymentDetails (PaymentID, ClientID, FirstName, SecondName, CardNumber)values(?, ?, ?, ?, ?)";
+                        PreparedStatement ps = con.prepareStatement(SQL);
+
+                        //getting the paymentID
+                        Statement stmt =  con.createStatement();
+                        String maxId = "SELECT * FROM PAYMENTDETAILS WHERE PAYMENTID = (SELECT MAX(PAYMENTID) FROM PAYMENTDETAILS)";
+                        ResultSet rs = stmt.executeQuery(maxId);
+                        int id = 0;
+                        if(rs.next()){
+                            id = rs.getInt(1)+1;
+                        }
+
+                        //getting details of the clients cuurrently logged on
+                        String Details = "SELECT firstname, secondname FROM CLIENTDETAILS WHERE ClientId = "+ClientID;
+                        rs = stmt.executeQuery(Details);                
+                        rs.next();
+
+
+                        String CardNumber = cardNumber.getText()+"_"+securityNumber.getText()+"_"+expiryDate.getText();
+                        //replacing the '?' in the String SQL with the values in the fields
+                        ps.setString(1, Integer.toString(id));
+                        ps.setString(2, Integer.toString(ClientID));
+                        ps.setString(3, rs.getString(1));
+                        ps.setString(4, rs.getString(2));
+                        ps.setString(5, CardNumber);
+
+                        ps.executeUpdate();
+
+                        cardNumber.setText("");
+                        securityNumber.setText("");
+                        expiryDate.setText("");
+                        JOptionPane.showMessageDialog(null, "successfully added new payment method");
+                        jTabbedPane1.setSelectedIndex(3);
+                        break OUTERRRR;
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Expiry date has been exceeded");
+                    }
+                    
+                }else{
+                    JOptionPane.showMessageDialog(null, "one or more fields have been inputted incorrectly");
+                }
+                
+                
+            }catch(SQLException e){
+                System.out.println(e);
+            }
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Card number field can only contain numbers");
+        }
+        
+    }//GEN-LAST:event_addPaymentActionPerformed
+
+    private void jToggleButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton7ActionPerformed
+        
+        JFrame frame = new JFrame("Grid Design");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(350, 70);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
+        frame.setVisible(true);
+
+        UtilDateModel model = new UtilDateModel();
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+
+        
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        
+        datePicker.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                expiryDate.setText(datePicker.getJFormattedTextField().getText());
+                frame.dispose();
+            }
+        });
+        
+        frame.add(datePicker);
+        frame.setTitle("Calendar");
+        
+    }//GEN-LAST:event_jToggleButton7ActionPerformed
+
+    private void veiwPaymentMethodsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_veiwPaymentMethodsActionPerformed
+        
+        try{
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+            Statement stmt =  con.createStatement();
+            ResultSet allPayments = stmt.executeQuery("SELECT CardNumber FROM PAYMENTDETAILS WHERE CLIENTID = "+ClientID);
+            Table.setModel(DbUtils.resultSetToTableModel(allPayments));
+            
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_veiwPaymentMethodsActionPerformed
+
+    private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
+        jTabbedPane1.setSelectedIndex(4);
+    }//GEN-LAST:event_jToggleButton6ActionPerformed
+
     private void changeCost(){
         try{    
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
@@ -1016,6 +1264,7 @@ public class BookingScreen extends javax.swing.JFrame {
             
             if(firstName != null){
                 welcomeLabel.setText("Welcome:  "+firstName);
+                singedInLabel.setText("Signed in as: "+firstName);
             }
             
         }catch(SQLException e){
@@ -1023,25 +1272,41 @@ public class BookingScreen extends javax.swing.JFrame {
             
         }
         
-        
-        
-        
-        
     }
     
     
+    public boolean checkValidExpiryDate(String date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            Date date1 = sdf.parse(date);
+            Date Current = new Date();
+            
+            if(date1.before(Current)){
+                return false;
+            }
+            
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        
+        
+        return true;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Table;
+    private javax.swing.JToggleButton addPayment;
     private javax.swing.JSpinner adultCount;
     private javax.swing.JToggleButton back;
     private javax.swing.JButton buyButton1;
+    private javax.swing.JFormattedTextField cardNumber;
     private javax.swing.JSpinner childrenCount;
     private javax.swing.JLabel costLabel;
     private javax.swing.JTextField emailRegisterField;
     private javax.swing.JButton endDate;
     private javax.swing.JLabel endDateLabel;
     private javax.swing.JLabel error;
+    private javax.swing.JLabel expiryDate;
     private javax.swing.JTextField firstNameRegisterField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -1051,6 +1316,11 @@ public class BookingScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1063,6 +1333,7 @@ public class BookingScreen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -1073,6 +1344,7 @@ public class BookingScreen extends javax.swing.JFrame {
     private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JToggleButton jToggleButton5;
     private javax.swing.JToggleButton jToggleButton6;
+    private javax.swing.JToggleButton jToggleButton7;
     private javax.swing.JButton loginButton;
     private javax.swing.JLabel message;
     private javax.swing.JLabel nightsLabel;
@@ -1080,9 +1352,12 @@ public class BookingScreen extends javax.swing.JFrame {
     private javax.swing.JPasswordField password2RegisterField;
     private javax.swing.JButton registerButton;
     private javax.swing.JTextField secondNameRegisterField;
+    private javax.swing.JFormattedTextField securityNumber;
+    private javax.swing.JLabel singedInLabel;
     private javax.swing.JButton startDate;
     private javax.swing.JLabel startDateLabel;
     private javax.swing.JToggleButton submit;
+    private javax.swing.JToggleButton veiwPaymentMethods;
     private javax.swing.JLabel welcomeLabel;
     // End of variables declaration//GEN-END:variables
 }
