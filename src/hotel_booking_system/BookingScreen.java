@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.Integer.parseInt;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -30,6 +32,10 @@ import org.jdatepicker.impl.UtilDateModel;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -104,6 +110,7 @@ public class BookingScreen extends javax.swing.JFrame {
         Table = new javax.swing.JTable();
         jToggleButton6 = new javax.swing.JToggleButton();
         veiwPaymentMethods = new javax.swing.JToggleButton();
+        sortPayments = new javax.swing.JToggleButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -562,6 +569,14 @@ public class BookingScreen extends javax.swing.JFrame {
             }
         });
 
+        sortPayments.setVisible(false);
+        sortPayments.setText("Sort Payments By expiry date");
+        sortPayments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortPaymentsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -580,7 +595,8 @@ public class BookingScreen extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(veiwPaymentMethods)
-                                    .addComponent(jToggleButton6))))
+                                    .addComponent(jToggleButton6)
+                                    .addComponent(sortPayments))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -594,8 +610,10 @@ public class BookingScreen extends javax.swing.JFrame {
                     .addComponent(jToggleButton6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(veiwPaymentMethods)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sortPayments)
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton2)
                 .addContainerGap())
@@ -984,6 +1002,7 @@ public class BookingScreen extends javax.swing.JFrame {
             ResultSet rs = stmt.executeQuery("SELECT * FROM CURRENTSESSION");
             
             Table.setModel(DbUtils.resultSetToTableModel(rs));
+            sortPayments.setVisible(false);
             
         }catch(SQLException e){
             System.out.println(e);
@@ -1174,7 +1193,7 @@ public class BookingScreen extends javax.swing.JFrame {
             Statement stmt =  con.createStatement();
             ResultSet allPayments = stmt.executeQuery("SELECT CardNumber FROM PAYMENTDETAILS WHERE CLIENTID = "+ClientID);
             Table.setModel(DbUtils.resultSetToTableModel(allPayments));
-            
+            sortPayments.setVisible(true);
         }catch(SQLException e){
             System.out.println(e);
         }
@@ -1184,6 +1203,132 @@ public class BookingScreen extends javax.swing.JFrame {
         jTabbedPane1.setSelectedIndex(4);
     }//GEN-LAST:event_jToggleButton6ActionPerformed
 
+    private void sortPaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortPaymentsActionPerformed
+       
+        try{
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+            Statement stmt =  con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_READ_ONLY);
+            ResultSet allPayments = stmt.executeQuery("SELECT CardNumber FROM PAYMENTDETAILS WHERE CLIENTID = "+ClientID);
+            
+            //getting the length of the list that'll be used to sort all of the expiry dates
+            int count = 0;
+            while(allPayments.next()){
+                count++;
+            }
+            allPayments.beforeFirst();
+            //creating the date array with the length of all the payments 
+            String[] expiryDates = new String[count];
+            
+            //getting the end string of the cardnumber string and parsing that into a date object
+            int index =0;
+            while(allPayments.next()){
+                String temp = allPayments.getString(1);
+                String dateString = temp.substring(temp.length()-10, temp.length()-1);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = sdf.parse(dateString);
+                expiryDates[index] = temp;
+                index++;
+            }
+            
+            //sorting all of the dates by acending order
+            MergeSort(expiryDates, count);
+            
+            
+            //updateing the table to display the new sorted values
+            DefaultTableModel model = (DefaultTableModel) Table.getModel();
+            
+            //removing the current values within the table model
+            if (model.getRowCount() > 0) {
+                for (int i = model.getRowCount() - 1; i > -1; i--) {
+                    model.removeRow(i);
+                }
+            }
+            
+            
+            //inserting the new sorted values into the table model and setting the table model with it
+            Object[] value = new Object[1];
+            for (int i = 0; i < expiryDates.length; i++) {
+                value[0] = expiryDates[i];
+                model.addRow(value);
+            }
+            Table.setModel(model);
+        }catch(SQLException e){
+            System.out.println(e);
+        } catch (ParseException ex) {
+            Logger.getLogger(BookingScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_sortPaymentsActionPerformed
+
+    public void MergeSort(String[] a, int n) {
+        if (n < 2) {
+            return;
+            //returns if the length of the list is 1
+        }
+        int mid = n / 2;
+        
+        String[] Left = new String[mid];
+        String[] Right = new String[n - mid];
+        
+        //makes two arrays for both halfs of the initial array
+        for (int i = 0; i < mid; i++) {
+            Left[i] = a[i];
+        }
+        for (int i = mid; i < n; i++) {
+            Right[i - mid] = a[i];
+        }
+        //places the corresponding value in the initial array in the two sub arrays
+        
+        MergeSort(Left, mid);
+        MergeSort(Right, n - mid);
+        // repeats the cycle until there are only arrays with length of one 
+        
+        // it then finally merges these single length arrays into the inital array at the ascending order
+        Merge(a, Left, Right, mid, n - mid);
+    }
+
+    public void Merge(String[] a, String[] l, String[] r, int Left, int Right) {
+
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        
+        //while loop breaks if one of the arrays are exhausted (for avoid out of bounds error)
+        while (i < Left && j < Right) {
+            //comparing in which array has the smallest value then puts that in the inital array
+            if (getDateFromCardNumberString(l,i).before(getDateFromCardNumberString(r,j))) {
+                a[k++] = l[i++];
+            }
+            else {
+                a[k++] = r[j++];
+            }
+        }
+        
+        //filling up the initial array with the rest of the array that still has values inside
+        while (i < Left) {
+            a[k++] = l[i++];
+        }
+        while (j < Right) {
+            a[k++] = r[j++];
+        }
+    }
+    
+    public Date getDateFromCardNumberString (String[] array,int index) {
+        Date theDate = new Date();
+        try{
+            String temp = array[index];
+            String dateString = temp.substring(temp.length()-10, temp.length()-1);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            theDate = sdf.parse(dateString);
+        }catch(ParseException e){
+            System.out.println(e);
+        }
+        
+        
+        return theDate;
+    }
+    
+    
     private void changeCost(){
         try{    
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
@@ -1354,6 +1499,7 @@ public class BookingScreen extends javax.swing.JFrame {
     private javax.swing.JTextField secondNameRegisterField;
     private javax.swing.JFormattedTextField securityNumber;
     private javax.swing.JLabel singedInLabel;
+    private javax.swing.JToggleButton sortPayments;
     private javax.swing.JButton startDate;
     private javax.swing.JLabel startDateLabel;
     private javax.swing.JToggleButton submit;

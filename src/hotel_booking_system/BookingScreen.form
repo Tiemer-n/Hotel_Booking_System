@@ -658,6 +658,7 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="veiwPaymentMethods" min="-2" max="-2" attributes="0"/>
                                           <Component id="jToggleButton6" min="-2" max="-2" attributes="0"/>
+                                          <Component id="sortPayments" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -679,8 +680,10 @@
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="veiwPaymentMethods" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" min="-2" pref="338" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="sortPayments" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="291" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jToggleButton2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -750,6 +753,17 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="veiwPaymentMethodsActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JToggleButton" name="sortPayments">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Sort Payments By expiry date"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sortPaymentsActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="sortPayments.setVisible(false);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
