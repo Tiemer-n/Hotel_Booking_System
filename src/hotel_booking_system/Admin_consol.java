@@ -640,7 +640,7 @@ public class Admin_consol extends javax.swing.JFrame {
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
 
         int confirmed = JOptionPane.showConfirmDialog(null,
-            "Are you sure you want to reset all room, roomtypes and parameters?", "Exit Program Message Box",
+            "Are you sure you want to reset all room, roomtypes and parameters?", "Are you sure?",
             JOptionPane.YES_NO_OPTION);
 
         if (confirmed == JOptionPane.YES_OPTION) {
