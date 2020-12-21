@@ -1515,17 +1515,16 @@ public class BookingScreen extends javax.swing.JFrame {
                             bookingMessage.setText("");
 
                         }else{
+                            //showing the user the dates that they want to book overlap with ones currently booked for the room they've selected
                             String overlappedDates = "";
                             for (int i = 0; i < overlappingDates.size(); i++) {
                                 overlappedDates = overlappedDates + overlappingDates.get(i) + " ";
-                            }
-                            
+                            }       
                             JOptionPane.showMessageDialog(null, "This room is not avaliable with the selected dates: "+ overlappedDates);
                         }  
                     }catch(ParseException e){
                         System.out.println(e);
                     }
-                    
                 }
             }
         }

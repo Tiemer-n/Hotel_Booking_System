@@ -17,6 +17,10 @@ import net.proteanit.sql.DbUtils;
 public class Admin_consol extends javax.swing.JFrame {
 
     
+    boolean viewingAdmins = false;
+    boolean viewingUsers = false;
+    boolean viewingBookings = false;
+    
     public Admin_consol() {
         initComponents();
     }
@@ -26,11 +30,11 @@ public class Admin_consol extends javax.swing.JFrame {
     private void initComponents() {
 
         jPasswordField1 = new javax.swing.JPasswordField();
+        error = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         logout = new javax.swing.JToggleButton();
         editBooking = new javax.swing.JToggleButton();
-        error = new javax.swing.JLabel();
         viewAdmin = new javax.swing.JToggleButton();
         viewUsers = new javax.swing.JToggleButton();
         viewBookings = new javax.swing.JToggleButton();
@@ -41,15 +45,6 @@ public class Admin_consol extends javax.swing.JFrame {
         deleteUser = new javax.swing.JToggleButton();
         viewRooms = new javax.swing.JToggleButton();
         viewRoomTypes = new javax.swing.JToggleButton();
-        jPanel3 = new javax.swing.JPanel();
-        password1 = new javax.swing.JPasswordField();
-        username = new javax.swing.JTextField();
-        AddButton = new javax.swing.JToggleButton();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        password2 = new javax.swing.JPasswordField();
-        jLabel19 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         resetButton = new javax.swing.JButton();
@@ -82,8 +77,21 @@ public class Admin_consol extends javax.swing.JFrame {
         kingBedNumber = new javax.swing.JSpinner();
         jLabel20 = new javax.swing.JLabel();
         kingLabel = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        password1 = new javax.swing.JPasswordField();
+        username = new javax.swing.JTextField();
+        AddButton = new javax.swing.JToggleButton();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        password2 = new javax.swing.JPasswordField();
+        jLabel19 = new javax.swing.JLabel();
 
         jPasswordField1.setText("jPasswordField1");
+
+        error.setForeground(new java.awt.Color(255, 0, 0));
+        error.setText("jLabel2");
+        error.setText(null);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setSize(new java.awt.Dimension(463, 415));
@@ -105,11 +113,12 @@ public class Admin_consol extends javax.swing.JFrame {
             }
         });
 
-        editBooking.setText("Edit Bookings");
-
-        error.setForeground(new java.awt.Color(255, 0, 0));
-        error.setText("jLabel2");
-        error.setText(null);
+        editBooking.setText("Edit Booking");
+        editBooking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editBookingActionPerformed(evt);
+            }
+        });
 
         viewAdmin.setText("View Admins");
         viewAdmin.addActionListener(new java.awt.event.ActionListener() {
@@ -126,6 +135,11 @@ public class Admin_consol extends javax.swing.JFrame {
         });
 
         viewBookings.setText("View Bookings");
+        viewBookings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewBookingsActionPerformed(evt);
+            }
+        });
 
         Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -147,9 +161,19 @@ public class Admin_consol extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setText("Admin Console");
 
-        deleteAdmin.setText("Delete Admins");
+        deleteAdmin.setText("Delete Admin");
+        deleteAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteAdminActionPerformed(evt);
+            }
+        });
 
-        deleteUser.setText("Delete Users");
+        deleteUser.setText("Delete User");
+        deleteUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteUserActionPerformed(evt);
+            }
+        });
 
         viewRooms.setText("View Rooms");
         viewRooms.addActionListener(new java.awt.event.ActionListener() {
@@ -175,28 +199,26 @@ public class Admin_consol extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(error)
-                            .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(editBooking)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(deleteAdmin)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(deleteUser)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(viewBookings))
+                            .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(viewAdmin)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(viewUsers)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(viewRoomTypes)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(viewRooms)))))
-                        .addGap(0, 130, Short.MAX_VALUE)))
+                                    .addComponent(viewAdmin)
+                                    .addComponent(deleteAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(deleteUser)
+                                    .addComponent(viewUsers))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(viewBookings)
+                                    .addComponent(editBooking))
+                                .addGap(20, 20, 20)
+                                .addComponent(viewRooms)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(viewRoomTypes)))
+                        .addGap(0, 6, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -205,90 +227,29 @@ public class Admin_consol extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(viewAdmin)
-                    .addComponent(viewUsers)
-                    .addComponent(viewRoomTypes)
-                    .addComponent(viewRooms))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(editBooking)
-                    .addComponent(deleteAdmin)
-                    .addComponent(deleteUser)
-                    .addComponent(viewBookings))
-                .addGap(46, 46, 46)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
-                .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(error)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(viewAdmin)
+                            .addComponent(viewUsers)
+                            .addComponent(viewRoomTypes)
+                            .addComponent(viewRooms))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(deleteUser)
+                            .addComponent(deleteAdmin)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(viewBookings)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editBooking)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Admin Console", jPanel1);
-
-        AddButton.setText("Add admin");
-        AddButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel17.setText("Username");
-
-        jLabel18.setText("Confirm Password");
-
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        jLabel2.setText("Add new Admin");
-
-        jLabel19.setText("Password");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel17)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel19))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(password1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AddButton)
-                            .addComponent(password2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(232, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(password1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(password2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18))
-                .addGap(33, 33, 33)
-                .addComponent(AddButton)
-                .addContainerGap(612, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Add new Admin", jPanel3);
 
         jLabel5.setText("Number of twin single beds:");
 
@@ -398,61 +359,58 @@ public class Admin_consol extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(resetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel13)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(roomTypes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                                    .addComponent(jLabel20)
-                                                    .addGap(12, 12, 12))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(roomTypeName, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                    .addComponent(singleBedNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                                                    .addComponent(queenBedNumber, javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(kingBedNumber, javax.swing.GroupLayout.Alignment.LEADING))))
-                                        .addComponent(jLabel15)
-                                        .addComponent(jLabel16)
+                                .addComponent(jLabel13)
+                                .addGap(18, 18, 18)
+                                .addComponent(roomTypes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addComponent(jLabel10)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(adultCost, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(hotelName, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel20)
+                                            .addGap(12, 12, 12))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(roomTypeName, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(singleBedNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                                            .addComponent(queenBedNumber, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(kingBedNumber, javax.swing.GroupLayout.Alignment.LEADING))))
+                                .addComponent(jLabel15)
+                                .addComponent(jLabel16)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel10)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(adultCost, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(hotelName, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(18, 18, 18)
+                                .addComponent(childCost, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(addExsistingRoomType, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(numberOfRooms1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(childCost, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(singleLabel)
+                                        .addGap(64, 64, 64)
+                                        .addComponent(queenLabel))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel14)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(addExsistingRoomType, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(numberOfRooms1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(singleLabel)
-                                                .addGap(64, 64, 64)
-                                                .addComponent(queenLabel))
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(90, 90, 90)
-                                                .addComponent(kingLabel)))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(90, 90, 90)
+                                        .addComponent(kingLabel))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel12)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                                         .addComponent(AddButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel8)
@@ -534,6 +492,68 @@ public class Admin_consol extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Setup Hotel", jPanel2);
 
+        AddButton.setText("Add admin");
+        AddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setText("Username");
+
+        jLabel18.setText("Confirm Password");
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        jLabel2.setText("Add new Admin");
+
+        jLabel19.setText("Password");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(138, 138, 138)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel19))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(password1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(AddButton)
+                            .addComponent(password2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(259, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(password1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(password2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
+                .addGap(33, 33, 33)
+                .addComponent(AddButton)
+                .addContainerGap(612, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Add new Admin", jPanel3);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -596,7 +616,7 @@ public class Admin_consol extends javax.swing.JFrame {
         if(username.getText().equals("") || password1.getText().equals("") || password2.getText().equals("")){
             error.setText("Please fill in all fields");
             break OUTER;
-        }else if(!password1.equals(password2)){
+        }else if(!password1.getText().equals(password2.getText())){
             JOptionPane.showMessageDialog(null, "Passwords do not match");
             break OUTER;
         }else{
@@ -886,10 +906,14 @@ public class Admin_consol extends javax.swing.JFrame {
     private void viewUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUsersActionPerformed
        
         try{
+            Table.setVisible(true);
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
             Statement stmt =  con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT clientid,firstname,secondname,emailaddress FROM CLIENTDETAILS");
             Table.setModel(DbUtils.resultSetToTableModel(rs));
+            viewingAdmins = false;
+            viewingUsers = true;
+            viewingBookings = false;
         }catch(SQLException e){
             System.out.println(e);
         }
@@ -897,9 +921,13 @@ public class Admin_consol extends javax.swing.JFrame {
 
     private void viewAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAdminActionPerformed
         try{
+            Table.setVisible(true);
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
             Statement stmt =  con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM CREDENTIALS");
+            viewingAdmins = true;
+            viewingUsers = false;
+            viewingBookings = false;
             Table.setModel(DbUtils.resultSetToTableModel(rs));
         }catch(SQLException e){
             System.out.println(e);
@@ -908,10 +936,14 @@ public class Admin_consol extends javax.swing.JFrame {
 
     private void viewRoomTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewRoomTypesActionPerformed
         try{
+            Table.setVisible(true);
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
             Statement stmt =  con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM ROOMTYPE");
             Table.setModel(DbUtils.resultSetToTableModel(rs));
+            viewingAdmins = false;
+            viewingUsers = false;
+            viewingBookings = false;
         }catch(SQLException e){
             System.out.println(e);
         }
@@ -919,14 +951,153 @@ public class Admin_consol extends javax.swing.JFrame {
 
     private void viewRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewRoomsActionPerformed
         try{
+            Table.setVisible(true);
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
             Statement stmt =  con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM ROOM");
             Table.setModel(DbUtils.resultSetToTableModel(rs));
+            viewingAdmins = false;
+            viewingUsers = false;
+            viewingBookings = false;
         }catch(SQLException e){
             System.out.println(e);
         }
     }//GEN-LAST:event_viewRoomsActionPerformed
+
+    private void viewBookingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewBookingsActionPerformed
+        try{
+            Table.setVisible(true);
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+            Statement stmt =  con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM BOOKINGS");
+            Table.setModel(DbUtils.resultSetToTableModel(rs));
+            viewingAdmins = false;
+            viewingUsers = false;
+            viewingBookings = true;
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_viewBookingsActionPerformed
+
+    private void deleteAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAdminActionPerformed
+        OUTER:
+        if(viewingAdmins){
+            //getting the selected admin and putting them in assigned values
+            int row = Table.getSelectedRow();
+            
+            if(row == -1){
+                JOptionPane.showMessageDialog(null, "You need to select an admin to delete");
+                break OUTER;
+            }
+            
+            String adminName = (String) Table.getValueAt(row, 1);
+            int adminID = (Integer) Table.getValueAt(row, 0);
+            
+            int confirmed = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete " + adminName + "?", null,
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmed == JOptionPane.YES_OPTION) {
+                
+                //if the admin said yes the slected admin will be deleted here
+                
+                try{
+                    Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+                    
+                    PreparedStatement ps = con.prepareStatement("DELETE FROM CREDENTIALS WHERE USERID = "+adminID);
+                    ps.executeUpdate();
+                    
+                    //updating the table with the new values
+                    Statement stmt =  con.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM CREDENTIALS");
+                    Table.setModel(DbUtils.resultSetToTableModel(rs));
+                    
+                    
+                }catch(SQLException e){
+                    System.out.println(e);
+                }
+                
+                
+                
+                
+            }
+        }
+    }//GEN-LAST:event_deleteAdminActionPerformed
+
+    private void deleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteUserActionPerformed
+        OUTER:
+        if(viewingUsers){
+            //getting the selected admin and putting them in assigned values
+            int row = Table.getSelectedRow();
+            
+            if(row == -1){
+                JOptionPane.showMessageDialog(null, "You need to select a User to delete");
+                break OUTER;
+            }
+            
+            int userID = (Integer) Table.getValueAt(row, 0);
+            String userFirstName = (String) Table.getValueAt(row, 1);
+            String userSecondName = (String) Table.getValueAt(row, 2);
+            
+            
+            int confirmed = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to delete " + userFirstName + " " + userSecondName + "?", null,
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmed == JOptionPane.YES_OPTION) {
+                
+                //if the admin said yes the slected admin will be deleted here
+                
+                try{
+                    Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+                    
+                    PreparedStatement ps = con.prepareStatement("DELETE FROM CLIENTDETAILS WHERE CLIENTID = "+userID);
+                    ps.executeUpdate();
+                    
+                    //updating the table with the new values
+                    Statement stmt =  con.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT clientid,firstname,secondname,emailaddress FROM CLIENTDETAILS");
+                    Table.setModel(DbUtils.resultSetToTableModel(rs));
+                    
+                    
+                }catch(SQLException e){
+                    System.out.println(e);
+                }
+                
+                
+                
+                
+            }
+        }
+    }//GEN-LAST:event_deleteUserActionPerformed
+
+    private void editBookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBookingActionPerformed
+        OUTER:
+        if(viewingBookings){
+            //getting the selected admin and putting them in assigned values
+            int row = Table.getSelectedRow();
+            
+            if(row == -1){
+                JOptionPane.showMessageDialog(null, "You need to select a Booking to edit");
+                break OUTER;
+            }
+            
+            //getting all of the data from the table to be put into the edit_booking class for editing
+            int bookingID = (Integer) Table.getValueAt(row, 0);
+            int clientID = (Integer) Table.getValueAt(row, 1);
+            int roomID = (Integer) Table.getValueAt(row, 2);
+            String startDate = (String) Table.getValueAt(row, 5);
+            String endDate = (String) Table.getValueAt(row, 6);
+            
+            
+            //making it so that the admin can change the payment method, start and ending date and the amount of people being booked
+            Edit_Booking window = new Edit_Booking();
+            window.setUpBookingDetails(startDate, endDate, clientID, roomID, bookingID);
+            window.setVisible(true);
+            
+            Table.setVisible(false);
+        }
+    }//GEN-LAST:event_editBookingActionPerformed
 
     /**
      * @param args the command line arguments
