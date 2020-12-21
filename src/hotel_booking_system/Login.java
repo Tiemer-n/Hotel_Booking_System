@@ -127,8 +127,11 @@ public class Login extends javax.swing.JFrame {
 
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
          String username = jTextField1.getText();
-         String password = jPasswordField1.getText();
+         int tempPassword = jPasswordField1.getText().hashCode();
+         String password = Integer.toString(tempPassword);
          
+         
+         //checking that the inputted data isnt blank
          if("".equals(username) || "".equals(password)){
              error.setText("Please fill in all credentials");
          }else if (!CheckValid()){
@@ -143,10 +146,10 @@ public class Login extends javax.swing.JFrame {
     public boolean CheckValid(){
         
         String username = jTextField1.getText();
-        String password = jPasswordField1.getText();
-        //connection 
-        //jdbc:derby://localhost:1527/Hotel_Booking_System
+        int tempPassword = jPasswordField1.getText().hashCode();
+        String password = Integer.toString(tempPassword);
 
+        
         try{
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
 

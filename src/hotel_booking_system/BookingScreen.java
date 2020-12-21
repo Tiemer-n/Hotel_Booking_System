@@ -2,24 +2,20 @@
 package hotel_booking_system;
 
 import java.awt.Dimension;
-import java.awt.List;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import static java.lang.Integer.parseInt;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
@@ -32,11 +28,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 
 public class BookingScreen extends javax.swing.JFrame {
@@ -48,6 +41,7 @@ public class BookingScreen extends javax.swing.JFrame {
     boolean choosingRoomType = false;
     boolean choosingRoom = false;
     int bookingPaymentID = -1;
+    boolean viewingBookings = false;
     public BookingScreen() {
         initComponents();
     }
@@ -169,6 +163,7 @@ public class BookingScreen extends javax.swing.JFrame {
         });
 
         adultCount.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
+        adultCount.setEditor(new javax.swing.JSpinner.NumberEditor(adultCount, ""));
         adultCount.setName(""); // NOI18N
         adultCount.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -949,7 +944,8 @@ public class BookingScreen extends javax.swing.JFrame {
     public boolean CheckValid(){
         
         String username = jTextField1.getText();
-        String password = jPasswordField1.getText();
+        int tempPassword = jPasswordField1.getText().hashCode();
+        String password = Integer.toString(tempPassword);
         //connection 
         //jdbc:derby://localhost:1527/Hotel_Booking_System
 
@@ -1023,11 +1019,16 @@ public class BookingScreen extends javax.swing.JFrame {
                 Client newClient = new Client(firstNameRegisterField.getText(), secondNameRegisterField.getText()
                         , emailRegisterField.getText(), password1RegisterField.getText());
 
+                
+                //hashing the password for security purposes
+                int hashedPassword = newClient.getPassword().hashCode();
+                
+                
                 ps.setString(1, Integer.toString(id));
                 ps.setString(2, newClient.getFirstName());
                 ps.setString(3, newClient.getUsername());
                 ps.setString(4, newClient.getEmailAddress());
-                ps.setString(5, newClient.getPassword());
+                ps.setString(5, Integer.toString(hashedPassword));
 
                 //putting them in the table
                 ps.executeUpdate();
@@ -1090,7 +1091,56 @@ public class BookingScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPane1MouseMoved
 
     private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
-        // TODO add your handling code here:
+        
+        OUTER:
+        if(viewingBookings){
+            //getting the selected booking and putting them in assigned values
+            int row = Table.getSelectedRow();
+            
+            if(row == -1){
+                JOptionPane.showMessageDialog(null, "You need to select a Booking to delete");
+                break OUTER;
+            }
+            
+            int bookingID = (Integer) Table.getValueAt(row, 0);
+            
+            
+            
+            int confirmed = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you want to cancel this booking?", null,
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmed == JOptionPane.YES_OPTION) {
+                
+                //if the user said yes the slected booking will be deleted here
+                
+                try{
+                    Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+                    
+                    PreparedStatement ps = con.prepareStatement("DELETE FROM BOOKINGS WHERE BookingID= "+bookingID);
+                    ps.executeUpdate();
+                    
+                   
+                    
+                    JOptionPane.showMessageDialog(null, "Successfully deleted cancelled your booking");
+                    
+                    //updating the table with the new values
+                    Statement stmt =  con.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT RoomID, BookingDate, StartDate, EndDate, NoOfNights FROM BOOKINGS WHERE ClientID ="+ClientID);
+                    Table.setModel(DbUtils.resultSetToTableModel(rs));
+                    
+                    
+                }catch(SQLException e){
+                    System.out.println(e);
+                }
+                
+                
+                
+                
+            }
+        }
+        
+        
     }//GEN-LAST:event_jToggleButton4ActionPerformed
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
@@ -1110,12 +1160,13 @@ public class BookingScreen extends javax.swing.JFrame {
         try{
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
             Statement stmt =  con.createStatement();
-            ResultSet current = stmt.executeQuery("SELECT RoomID, BookingDate, StartDate, EndDate, NoOfNights FROM BOOKINGS WHERE ClientID ="+ClientID);
+            ResultSet current = stmt.executeQuery("SELECT bookingID, RoomID, BookingDate, StartDate, EndDate, NoOfNights FROM BOOKINGS WHERE ClientID ="+ClientID);
             
             
             
             Table.setModel(DbUtils.resultSetToTableModel(current));
             sortPayments.setVisible(false);
+            viewingBookings = true;
             
         }catch(SQLException e){
             System.out.println(e);
@@ -1393,10 +1444,21 @@ public class BookingScreen extends javax.swing.JFrame {
                     
                     try{
                         Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
-                        Statement stmt =  con.createStatement();
-                        ResultSet allRoomTypes = stmt.executeQuery("SELECT * FROM ROOMTYPE");
+                        Statement stmt =  con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                        ResultSet.CONCUR_READ_ONLY);
+                        
+                        //getting all of the room types where there are at least one bed for everyone that are going to stay in that room
+                        ResultSet allRoomTypes = stmt.executeQuery("SELECT * FROM ROOMTYPE WHERE numberofsingle+numberofqueen+numberofking > "+
+                                Integer.toString((Integer) adultCount.getValue()) + " + " + Integer.toString((Integer) childrenCount.getValue()) + " - 1 ");
+                        
+                        if(!allRoomTypes.next()){
+                           JOptionPane.showMessageDialog(null, "There are too many people booked with the amount of beds we can offer"); 
+                        }
+                        allRoomTypes.beforeFirst();
+                        
                         bookingTable.setModel(DbUtils.resultSetToTableModel(allRoomTypes));
                         bookingMessage.setText("Please pick the room type that you would like to use");
+                        
                     }catch(SQLException e){
                         System.out.println(e);
                     }

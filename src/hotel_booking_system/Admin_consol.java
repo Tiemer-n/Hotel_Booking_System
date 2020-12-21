@@ -635,14 +635,22 @@ public class Admin_consol extends javax.swing.JFrame {
                 if(rs.next()){
                     id = rs.getInt(1)+1;                    
                 }
-
-                //replacing the '?' in the String SQL with the values in the fields
                 
                 Admin newAdmin = new Admin(username.getText(), password1.getText());
                 
+                
+                //hashing the password for security purposes
+                int hashedPassword = newAdmin.getPassword().hashCode();
+                
+                
+
+                //replacing the '?' in the String SQL with the values in the fields
+                
+                
+                
                 ps.setString(1, Integer.toString(id));
                 ps.setString(2, newAdmin.getUsername());
-                ps.setString(3, newAdmin.getPassword());
+                ps.setString(3, Integer.toString(hashedPassword));
 
                 //putting them in the table
                 ps.executeUpdate();
@@ -1027,7 +1035,7 @@ public class Admin_consol extends javax.swing.JFrame {
     private void deleteUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteUserActionPerformed
         OUTER:
         if(viewingUsers){
-            //getting the selected admin and putting them in assigned values
+            //getting the selected user and putting them in assigned values
             int row = Table.getSelectedRow();
             
             if(row == -1){
@@ -1046,13 +1054,24 @@ public class Admin_consol extends javax.swing.JFrame {
 
             if (confirmed == JOptionPane.YES_OPTION) {
                 
-                //if the admin said yes the slected admin will be deleted here
+                //if the admin said yes the slected user will be deleted here
                 
                 try{
                     Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
                     
                     PreparedStatement ps = con.prepareStatement("DELETE FROM CLIENTDETAILS WHERE CLIENTID = "+userID);
                     ps.executeUpdate();
+                    
+                    //deleting all bookings ascociated with that user
+                    ps = con.prepareStatement("DELETE FROM BOOKINGS WHERE CLIENTID = "+userID);
+                    ps.executeUpdate();
+                    
+                    
+                    //deleting all payment datails ascosiated with that user
+                    ps = con.prepareStatement("DELETE FROM PAYMENTDETAILS WHERE CLIENTID = "+userID);
+                    ps.executeUpdate();
+                    
+                    JOptionPane.showMessageDialog(null, "Successfully deleted " + userFirstName + " " + userSecondName);
                     
                     //updating the table with the new values
                     Statement stmt =  con.createStatement();
