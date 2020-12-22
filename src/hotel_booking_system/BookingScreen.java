@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -618,10 +620,10 @@ public class BookingScreen extends javax.swing.JFrame {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jToggleButton2)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jToggleButton3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jToggleButton4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jToggleButton3)
+                                    .addComponent(jToggleButton4))
+                                .addGap(126, 126, 126)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(veiwPaymentMethods)
                                     .addComponent(jToggleButton6)
@@ -635,10 +637,11 @@ public class BookingScreen extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jToggleButton3)
-                    .addComponent(jToggleButton4)
                     .addComponent(jToggleButton6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(veiwPaymentMethods)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(veiwPaymentMethods)
+                    .addComponent(jToggleButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sortPayments)
                 .addGap(27, 27, 27)
@@ -914,38 +917,57 @@ public class BookingScreen extends javax.swing.JFrame {
 
         if("".equals(username) || "".equals(password)){
             error.setText("Please fill in all credentials");
-        }else if (!CheckValid()){
-            error.setText("Username or Password is incorrect");
-        }else if (CheckValid()){
-
-            try{
-                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
-
-                String SQL = "DELETE FROM CURRENTSESSION";
-                PreparedStatement ps = con.prepareStatement(SQL);
-                ps.executeUpdate();
-
-                PreparedStatement rs = con.prepareStatement("INSERT INTO CURRENTSESSION (CLIENTID) VALUES("+ClientID+")");
-                rs.executeUpdate();
-            }catch(SQLException e){
-                System.out.println(e);
+        }else try {
+            if (!CheckValid()){
+                error.setText("Username or Password is incorrect");
+            }else if (CheckValid()){
+                
+                try{
+                    Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Hotel_Booking_System","isaac","1234");
+                    
+                    String SQL = "DELETE FROM CURRENTSESSION";
+                    PreparedStatement ps = con.prepareStatement(SQL);
+                    ps.executeUpdate();
+                    
+                    PreparedStatement rs = con.prepareStatement("INSERT INTO CURRENTSESSION (CLIENTID) VALUES("+ClientID+")");
+                    rs.executeUpdate();
+                }catch(SQLException e){
+                    System.out.println(e);
+                }
+                
+                JOptionPane.showMessageDialog(null, "Successfully logged in");
+                jTextField1.setText(null);
+                jPasswordField1.setText(null);
+                
+                jTabbedPane1.setSelectedIndex(0);
+                
             }
-
-            JOptionPane.showMessageDialog(null, "Successfully logged in");
-            jTextField1.setText(null);
-            jPasswordField1.setText(null);
-            
-            jTabbedPane1.setSelectedIndex(0);
-
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(BookingScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_submitActionPerformed
 
-    public boolean CheckValid(){
+    public boolean CheckValid() throws NoSuchAlgorithmException{
         
         String username = jTextField1.getText();
-        int tempPassword = jPasswordField1.getText().hashCode();
-        String password = Integer.toString(tempPassword);
+        
+       //hashing the password for security purposes
+        MessageDigest md = MessageDigest.getInstance("MD5");
+
+        //parsing the date through the messagedigest object
+        md.update(jPasswordField1.getText().getBytes());
+
+        //compute the message digest
+        byte[] digest = md.digest();
+        StringBuffer password = new StringBuffer();
+
+        //converting the byte array to hexString format
+        for (int i = 0; i < digest.length; i++) {
+            password.append(Integer.toHexString(0xFF & digest[i]));
+        }
+        
+        
         //connection 
         //jdbc:derby://localhost:1527/Hotel_Booking_System
 
@@ -962,7 +984,7 @@ public class BookingScreen extends javax.swing.JFrame {
             while(rs.next()){
                 String usernameCheck = rs.getString("EMAILADDRESS");
                 String passwordCheck = rs.getString("PASSWORD");
-                if(username.equals(usernameCheck) && password.equals(passwordCheck)){
+                if(username.equals(usernameCheck) && password.toString().equals(passwordCheck)){
                     ClientID = rs.getInt(1);
                     return true;
                 }
@@ -1021,20 +1043,31 @@ public class BookingScreen extends javax.swing.JFrame {
 
                 
                 //hashing the password for security purposes
-                int hashedPassword = newClient.getPassword().hashCode();
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                //parsing the date through the messagedigest object
+                md.update(newClient.getPassword().getBytes());
+                
+                byte[] digest = md.digest();
+                StringBuffer hashedPassword = new StringBuffer();
+                
+                for (int i = 0; i < digest.length; i++) {
+                    hashedPassword.append(Integer.toHexString(0xFF & digest[i]));
+                }
                 
                 
                 ps.setString(1, Integer.toString(id));
                 ps.setString(2, newClient.getFirstName());
                 ps.setString(3, newClient.getUsername());
                 ps.setString(4, newClient.getEmailAddress());
-                ps.setString(5, Integer.toString(hashedPassword));
+                ps.setString(5, hashedPassword.toString());
 
                 //putting them in the table
                 ps.executeUpdate();
 
             }catch (SQLException e){
                 System.out.println(e);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(BookingScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
             // -----------------
 
@@ -1297,7 +1330,6 @@ public class BookingScreen extends javax.swing.JFrame {
                         securityNumber.setText("");
                         expiryDate.setText("");
                         JOptionPane.showMessageDialog(null, "successfully added new payment method");
-                        jTabbedPane1.setSelectedIndex(3);
                         break OUTERRRR;
                     }else{
                         JOptionPane.showMessageDialog(null, "Expiry date has been exceeded");

@@ -7,7 +7,11 @@ package hotel_booking_system;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Isaac
@@ -134,20 +138,39 @@ public class Login extends javax.swing.JFrame {
          //checking that the inputted data isnt blank
          if("".equals(username) || "".equals(password)){
              error.setText("Please fill in all credentials");
-         }else if (!CheckValid()){
-             error.setText("Username or Password is incorrect");
-         }else if (CheckValid()){
-             Admin_consol main = new Admin_consol();
-             main.setVisible(true);
-             this.dispose();
+         }else try {
+             if (!CheckValid()){
+                 error.setText("Username or Password is incorrect");
+             }else if (CheckValid()){
+                 Admin_consol main = new Admin_consol();
+                 main.setVisible(true);
+                 this.dispose();
+             }
+         } catch (NoSuchAlgorithmException ex) {
+             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
          }
     }//GEN-LAST:event_submitActionPerformed
 
-    public boolean CheckValid(){
+    public boolean CheckValid() throws NoSuchAlgorithmException{
         
         String username = jTextField1.getText();
-        int tempPassword = jPasswordField1.getText().hashCode();
-        String password = Integer.toString(tempPassword);
+        
+        //hashing the password for security purposes
+        MessageDigest md = MessageDigest.getInstance("MD5");
+
+        //parsing the date through the messagedigest object
+        md.update(jPasswordField1.getText().getBytes());
+
+        //compute the message digest
+        byte[] digest = md.digest();
+        StringBuffer password = new StringBuffer();
+
+        //converting the byte array to hexString format
+        for (int i = 0; i < digest.length; i++) {
+            password.append(Integer.toHexString(0xFF & digest[i]));
+        }
+        
+        
 
         
         try{
@@ -163,7 +186,7 @@ public class Login extends javax.swing.JFrame {
             while(rs.next()){
                 String usernameCheck = rs.getString("USERNAME");
                 String passwordCheck = rs.getString("PASSWORD");
-                if(username.equals(usernameCheck) && password.equals(passwordCheck)){
+                if(username.equals(usernameCheck) && password.toString().equals(passwordCheck)){
                     return true;
                 }
                 

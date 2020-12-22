@@ -4,12 +4,16 @@ package hotel_booking_system;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
@@ -640,24 +644,42 @@ public class Admin_consol extends javax.swing.JFrame {
                 
                 
                 //hashing the password for security purposes
-                int hashedPassword = newAdmin.getPassword().hashCode();
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                
+                //parsing the date through the messagedigest object
+                md.update(newAdmin.getPassword().getBytes());
+                
+                //compute the message digest
+                byte[] digest = md.digest();
+                StringBuffer hashedPassword = new StringBuffer();
+                
+                //converting the byte array to hexString format
+                for (int i = 0; i < digest.length; i++) {
+                    hashedPassword.append(Integer.toHexString(0xFF & digest[i]));
+                }
                 
                 
 
                 //replacing the '?' in the String SQL with the values in the fields
-                
-                
-                
                 ps.setString(1, Integer.toString(id));
                 ps.setString(2, newAdmin.getUsername());
-                ps.setString(3, Integer.toString(hashedPassword));
+                ps.setString(3, hashedPassword.toString());
 
                 //putting them in the table
                 ps.executeUpdate();
+                
+                username.setText(null);
+                password1.setText(null);
+                password2.setText(null);
+                jTabbedPane1.setSelectedIndex(0);
+                
+                
                 JOptionPane.showMessageDialog(null, "Successfully created new admin");
             
             } catch (SQLException e){
                 System.out.println(e);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(Admin_consol.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
